@@ -1,0 +1,16 @@
+SELECT DISTINCT ?itemLabel ?ICAO_airport_code  ?countryLabel ?located_in_the_administrative_territorial_entityLabel ?coordinate_location WHERE {
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
+  {
+    SELECT DISTINCT ?item WHERE {
+      ?item p:P31 ?statement0.
+      ?statement0 (ps:P31/(wdt:P279*)) wd:Q644371.
+      ?item p:P3872 ?statement1.
+      ?statement1 (psv:P3872/wikibase:quantityAmount) ?numericQuantity.
+      FILTER(?numericQuantity > "500000"^^xsd:decimal)
+    }
+    LIMIT 1000
+  }
+  OPTIONAL { ?item wdt:P239 ?ICAO_airport_code. }
+  OPTIONAL { ?item wdt:P17 ?country. }
+  OPTIONAL { ?item wdt:P131 ?located_in_the_administrative_territorial_entity. }
+  OPTIONAL { ?item wdt:P625 ?coordinate_location. }
